@@ -8,6 +8,7 @@
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --header-height: 4rem;
 }
 
 body {
@@ -24,18 +25,17 @@ body {
   min-height: 100vh;
 }
 
-.container {
-  width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 /* Header Styles */
 .header {
   background-color: white;
   border-bottom: 1px solid var(--border-color);
-  padding: 1rem 0;
+  height: var(--header-height);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -49,6 +49,7 @@ body {
   max-width: 1280px;
   margin: 0 auto;
   padding: 0 2rem;
+  height: 100%;
 }
 
 .logo {
@@ -56,6 +57,14 @@ body {
   font-weight: 700;
   color: var(--primary-color);
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo::before {
+  content: "🌍";
+  font-size: 1.75rem;
 }
 
 .nav-menu {
@@ -68,11 +77,117 @@ body {
   color: var(--secondary-color);
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.2s;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
 }
 
 .nav-link:hover {
   color: var(--primary-color);
+  background-color: var(--background-color);
+}
+
+.nav-link.active {
+  color: var(--primary-color);
+  background-color: var(--background-color);
+  font-weight: 600;
+}
+
+.user-menu {
+  margin-left: 2rem;
+  position: relative;
+}
+
+.user-menu .btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+}
+
+.user-avatar {
+  font-size: 1.25rem;
+}
+
+.user-name {
+  font-weight: 500;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow-lg);
+  min-width: 200px;
+  border: 1px solid var(--border-color);
+  animation: slideDown 0.2s ease;
+  z-index: 1000;
+}
+
+.profile-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: background-color 0.2s;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.profile-item:hover {
+  background-color: var(--background-color);
+}
+
+.profile-icon {
+  font-size: 1.1rem;
+  opacity: 0.8;
+}
+
+.profile-divider {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 0.5rem 0;
+}
+
+.profile-item.logout {
+  color: #ef4444;
+}
+
+.profile-item.logout:hover {
+  background-color: #fee2e2;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  padding-top: 1rem;
+}
+
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
 }
 
 /* Card Styles */
@@ -172,6 +287,61 @@ body {
   background-color: var(--background-color);
 }
 
+/* Toast Notification */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 1rem 1.5rem;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  animation: slideIn 0.3s ease;
+}
+
+.toast.success {
+  border-left: 4px solid #10b981;
+}
+
+.toast.error {
+  border-left: 4px solid #ef4444;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Loading Skeleton */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--background-color) 0%,
+    #e2e8f0 50%,
+    var(--background-color) 100%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
   .container {
@@ -194,6 +364,14 @@ body {
   
   .nav-menu {
     gap: 1rem;
+  }
+  
+  .nav-link {
+    padding: 0.5rem;
+  }
+  
+  .user-name {
+    display: none;
   }
   
   .btn {
