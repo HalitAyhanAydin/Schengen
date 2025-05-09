@@ -13,6 +13,7 @@ const Header = () => {
   const location = useLocation();
   const isAuthenticated = true; // Bu değer gerçek uygulamada auth state'inden gelecek
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   if (!isAuthenticated) return null;
 
@@ -22,7 +23,14 @@ const Header = () => {
         <Link to="/home" className="logo">
           Schengen Vize
         </Link>
-        <nav className="nav-menu">
+        <button 
+          className="mobile-menu-button"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Menüyü aç/kapat"
+        >
+          {isMobileMenuOpen ? '✕' : '☰'}
+        </button>
+        <nav className={`nav-menu ${isMobileMenuOpen ? 'active' : ''}`}>
           <Link to="/home" className={`nav-link ${location.pathname === '/home' ? 'active' : ''}`}>
             Ana Sayfa
           </Link>

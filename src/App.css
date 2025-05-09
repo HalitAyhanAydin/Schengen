@@ -347,7 +347,7 @@ body {
   .container {
     padding: 1.5rem;
   }
-  
+
   .header-container {
     padding: 0 1.5rem;
   }
@@ -415,3 +415,213 @@ body {
 .max-w-4xl { max-width: 56rem; }
 .max-w-6xl { max-width: 72rem; }
 .max-w-7xl { max-width: 80rem; }
+
+/* Mobil Menü */
+.mobile-menu-button {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .mobile-menu-button {
+    display: block;
+  }
+
+  .nav-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    padding: 1rem;
+    flex-direction: column;
+    gap: 0.5rem;
+    box-shadow: var(--shadow);
+    border-top: 1px solid var(--border-color);
+  }
+
+  .nav-menu.active {
+    display: flex;
+  }
+
+  .nav-link {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    text-align: left;
+  }
+
+  .user-menu {
+    margin: 0;
+    width: 100%;
+  }
+
+  .user-menu .btn {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .profile-dropdown {
+    position: static;
+    margin-top: 0.5rem;
+    box-shadow: none;
+    border: 1px solid var(--border-color);
+  }
+
+  .container {
+    padding: 1rem;
+  }
+
+  .header-container {
+    padding: 0 1rem;
+  }
+}
+
+/* Küçük Telefonlar için Ek Düzenlemeler */
+@media (max-width: 480px) {
+  .container {
+    padding: 0.75rem;
+  }
+
+  .header-container {
+    padding: 0 0.75rem;
+  }
+
+  .logo span {
+    font-size: 1.1rem;
+  }
+
+  .logo img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .nav-link {
+    font-size: 0.9rem;
+    padding: 0.75rem 0.5rem;
+  }
+
+  .btn {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .profile-dropdown {
+    min-width: 180px;
+  }
+
+  .profile-item {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .toast {
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .card {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .card-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-content {
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+}
+
+/* Çok Küçük Ekranlar için Ek Düzenlemeler */
+@media (max-width: 360px) {
+  .container {
+    padding: 0.5rem;
+  }
+
+  .header-container {
+    padding: 0 0.5rem;
+  }
+
+  .logo span {
+    font-size: 1rem;
+  }
+
+  .logo img {
+    width: 25px;
+    height: 25px;
+  }
+
+  .nav-link {
+    font-size: 0.85rem;
+  }
+
+  .btn {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+  .profile-dropdown {
+    min-width: 160px;
+  }
+
+  .profile-item {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+  .card {
+    padding: 0.5rem;
+  }
+
+  .card-title {
+    font-size: 1rem;
+  }
+
+  .card-content {
+    font-size: 0.85rem;
+  }
+}
+
+/* Yükseklik Bazlı Düzenlemeler */
+@media (max-height: 600px) {
+  .header {
+    height: 3.5rem;
+  }
+
+  .nav-menu {
+    max-height: calc(100vh - 3.5rem);
+    overflow-y: auto;
+  }
+
+  .profile-dropdown {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+}
+
+/* Yatay Mod için Düzenlemeler */
+@media (max-width: 896px) and (orientation: landscape) {
+  .header {
+    height: 3.5rem;
+  }
+
+  .nav-menu {
+    max-height: calc(100vh - 3.5rem);
+    overflow-y: auto;
+  }
+
+  .profile-dropdown {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+}
