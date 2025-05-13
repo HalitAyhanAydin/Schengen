@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import LoginView from './views/LoginView';
 import RegisterView from './views/RegisterView';
 import HomeView from './views/HomeView';
@@ -11,11 +12,20 @@ import './App.css';
 
 const Header = () => {
   const location = useLocation();
-  const isAuthenticated = true;
+  const { currentUser, logout } = useAuth();
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  if (!isAuthenticated) return null;
+  if (!currentUser) return null;
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/login');
+    } catch (error) {
+      console.error('Çıkış yapılırken hata oluştu:', error);
+    }
+  };
 
   return (
     <header className="header">
@@ -46,7 +56,7 @@ const Header = () => {
               onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
             >
               <span className="user-avatar">👤</span>
-              <span className="user-name">Kullanıcı</span>
+              <span className="user-name">{currentUser.email}</span>
             </button>
             {isProfileMenuOpen && (
               <div className="profile-dropdown">
@@ -59,7 +69,7 @@ const Header = () => {
                   Ayarlar
                 </Link>
                 <div className="profile-divider"></div>
-                <button className="profile-item logout">
+                <button onClick={handleLogout} className="profile-item logout">
                   <span className="profile-icon">🚪</span>
                   Çıkış Yap
                 </button>
@@ -75,21 +85,58 @@ const Header = () => {
 function App() {
   return (
     <Router>
-      <div className="app">
-        <Header />
-        <main className="main-content">
-          <Routes>
-            <Route path="/login" element={<LoginView />} />
-            <Route path="/register" element={<RegisterView />} />
-            <Route path="/home" element={<HomeView />} />
-            <Route path="/appointments" element={<AppointmentListView />} />
-            <Route path="/appointment-form" element={<AppointmentFormView />} />
-            <Route path="/notification-settings" element={<NotificationSettingsView />} />
-            <Route path="/profile" element={<ProfileView />} />
-            <Route path="/" element={<Navigate to="/login" />} />
-          </Routes>
-        </main>
-      </div>
+      <AuthProvider>
+        <div className="app">
+          <Header />
+          <main className="main-content">
+            <Routes>
+              <Route path="/login" element={<LoginView />} />
+              <Route path="/register" element={<RegisterView />} />
+              <Route
+                path="/home"
+                element={
+                  <PrivateRoute>
+                    <HomeView />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/appointments"
+                element={
+                  <PrivateRoute>
+                    <AppointmentListView />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/appointment-form"
+                element={
+                  <PrivateRoute>
+                    <AppointmentFormView />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/notification-settings"
+                element={
+                  <PrivateRoute>
+                    <NotificationSettingsView />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <PrivateRoute>
+                    <ProfileView />
+                  </PrivateRoute>
+                }
+              />
+              <Route path="/" element={<Navigate to="/login" />} />
+            </Routes>
+          </main>
+        </div>
+      </AuthProvider>
     </Router>
   );
 }

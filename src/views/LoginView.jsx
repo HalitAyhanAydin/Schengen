@@ -1,46 +1,70 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
+import { useNavigate, Link } from 'react-router-dom';
 import './LoginView.css';
 
 const TEST_EMAIL = 'test@test.com';
 const TEST_PASSWORD = '123456';
 
-const LoginView = () => {
-  const navigate = useNavigate();
+export default function LoginView() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
-    if (email === TEST_EMAIL && password === TEST_PASSWORD) {
-      alert('Başarılı! Giriş yapıldı.');
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    try {
+      setError('');
+      setLoading(true);
+      await login(email, password);
       navigate('/home');
-    } else {
-      alert('Hata: E-posta veya şifre hatalı!\n\nTest için:\nE-posta: test@test.com\nŞifre: 123456');
+    } catch (error) {
+      setError('Giriş yapılamadı. Lütfen bilgilerinizi kontrol edin.');
     }
-  };
+    setLoading(false);
+  }
 
   return (
     <div className="login-container">
-      <div className="form-container">
-        <h1 className="title">Giriş Yap</h1>
-        <input
-          className="input"
-          placeholder="E-posta"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          type="email"
-        />
-        <input
-          className="input"
-          placeholder="Şifre"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          type="password"
-        />
-        <button className="button" onClick={handleLogin}>Giriş Yap</button>
-        <button className="link-button" onClick={() => navigate('/register')}>
-          Hesabın yok mu? Kayıt ol
-        </button>
+      <div className="login-box">
+        <h1>Giriş Yap</h1>
+        {error && <div className="error-message">{error}</div>}
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="email">E-posta</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Şifre</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button 
+            type="submit" 
+            className="login-button"
+            disabled={loading}
+          >
+            {loading ? 'Giriş yapılıyor...' : 'Giriş Yap'}
+          </button>
+        </form>
+        <div className="register-link">
+          Hesabınız yok mu? <Link to="/register">Kayıt Ol</Link>
+        </div>
         <div className="test-info">
           <p>Test Bilgileri:</p>
           <p>E-posta: {TEST_EMAIL}</p>
@@ -49,6 +73,4 @@ const LoginView = () => {
       </div>
     </div>
   );
-};
-
-export default LoginView; 
+} 
