@@ -11,7 +11,7 @@ import './App.css';
 
 const Header = () => {
   const location = useLocation();
-  const isAuthenticated = true; // Bu değer gerçek uygulamada auth state'inden gelecek
+  const isAuthenticated = true;
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
